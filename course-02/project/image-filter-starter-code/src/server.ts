@@ -31,6 +31,22 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
 
   //! END @TODO1
   
+  app.get('/filteredimage', (req, res) => {
+    let { image_url } = req.query;
+    if (!image_url) {
+      res.status(400).send('Image Url cannot be empty');
+    }
+    let filterImagePromise = filterImageFromURL(image_url);
+    filterImagePromise.then(filterUrl => {
+      res.status(200).sendFile(filterUrl, () => {
+        deleteLocalFiles([filterUrl]);
+        console.log('File deleted sucessfully from url ' + filterUrl);
+      });
+    }).catch((error) => {
+      res.status(400).send('Url is malformed : ' + error);
+    });
+  });
+
   // Root Endpoint
   // Displays a simple message to the user
   app.get( "/", async ( req, res ) => {
