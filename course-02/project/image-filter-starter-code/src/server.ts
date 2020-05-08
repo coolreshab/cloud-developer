@@ -30,7 +30,7 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
   /**************************************************************************** */
 
   //! END @TODO1
-  
+
   app.get('/filteredimage', (req, res) => {
     let { image_url } = req.query;
     if (!image_url) {
@@ -43,7 +43,7 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
         console.log('File deleted sucessfully from url ' + filterUrl);
       });
     }).catch((error) => {
-      res.status(400).send('Url is malformed : ' + error);
+      res.status(422).send('Url cannot be processed: ' + error);
     });
   });
 
