@@ -1,4 +1,5 @@
 import express from 'express';
+import { Request, Response } from 'express'
 import bodyParser from 'body-parser';
 import {filterImageFromURL, deleteLocalFiles} from './util/util';
 
@@ -31,12 +32,12 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
 
   //! END @TODO1
 
-  app.get('/filteredimage', (req, res) => {
+  app.get('/filteredimage', (req: Request, res: Response) => {
     let { image_url } = req.query;
     if (!image_url) {
       res.status(400).send('Image Url cannot be empty');
     }
-    let filterImagePromise = filterImageFromURL(image_url);
+    let filterImagePromise: Promise<string> = filterImageFromURL(image_url);
     filterImagePromise.then(filterUrl => {
       res.status(200).sendFile(filterUrl, () => {
         deleteLocalFiles([filterUrl]);
